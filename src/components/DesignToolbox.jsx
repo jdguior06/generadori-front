@@ -244,6 +244,73 @@ export default function DesignToolbox({ handleAddElement }) {
               >
                 <TableIcon size={14} /> Tabla
               </button>
+              <button
+                onClick={() =>
+                  handleAddElement("card", {
+                    text: "Título de tarjeta",
+                    description: "Descripción de ejemplo para esta tarjeta",
+                    color: "#ffffff",
+                    textColor: "#000000",
+                    borderRadius: 8,
+                    height: 200,
+                    width: 300,
+                    borderWidth: 1,
+                    borderColor: "#e5e7eb",
+                    type: "card",
+                  })
+                }
+                className="flex items-center gap-1 p-2 bg-gray-50 hover:bg-gray-100 rounded text-xs"
+              >
+                <List size={14} /> Tarjeta
+              </button>
+
+              <button
+                onClick={() =>
+                  handleAddElement("alert", {
+                    text: "¡Esta es una alerta de ejemplo!",
+                    color: "#fee2e2",
+                    textColor: "#b91c1c",
+                    borderRadius: 4,
+                    height: 50,
+                    width: 300,
+                    borderWidth: 1,
+                    borderColor: "#fecaca",
+                    type: "alert",
+                  })
+                }
+                className="flex items-center gap-1 p-2 bg-gray-50 hover:bg-gray-100 rounded text-xs"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>{" "}
+                Alerta
+              </button>
+
+              <button
+                onClick={() =>
+                  handleAddElement("divider", {
+                    color: "#e5e7eb",
+                    height: 1,
+                    width: 300,
+                    type: "divider",
+                  })
+                }
+                className="flex items-center gap-1 p-2 bg-gray-50 hover:bg-gray-100 rounded text-xs"
+              >
+                <MinusIcon size={14} /> Divisor
+              </button>
             </div>
           )}
 

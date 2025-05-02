@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import CanvasArea from "../components/CanvasArea";
-import { exportProjectAsAngularZip, fetchProjectById, updateProject } from "../services/proyectoService";
+import {
+  exportProjectAsAngularZip,
+  fetchProjectById,
+  updateProject,
+} from "../services/proyectoService";
 import PageManager from "../components/PageManager";
 import PageTabs from "../components/PageTabs";
 import { Palette, Layers, Save } from "lucide-react";
 import ElementEditor from "../components/ElementEditor";
 import generateRandomColor from "../utils/generateRandomColor";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:3001");
 
@@ -25,6 +30,8 @@ export default function ProjectoPizarra() {
 
   const [currentFrame, setCurrentFrame] = useState(null);
   const [zoom, setZoom] = useState(1);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadProject = async () => {
@@ -298,18 +305,26 @@ export default function ProjectoPizarra() {
         )}
       </div>
 
-      <button
-        onClick={handleSave}
-        className="fixed bottom-6 right-6 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors"
-      >
-        <Save size={20} /> Guardar cambios
-      </button>
-      <button
-        onClick={() => exportProjectAsAngularZip(id)}
-        className="fixed bottom-6 right-52 flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors"
-      >
-        <Save size={20} /> Exportar a Angular
-      </button>
+      <div className="fixed bottom-6 right-6 flex flex-col gap-3">
+        <button
+          onClick={handleSave}
+          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors"
+        >
+          <Save size={20} /> Guardar cambios
+        </button>
+        <button
+          onClick={() => exportProjectAsAngularZip(id)}
+          className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors"
+        >
+          <Save size={20} /> Exportar a Angular
+        </button>
+        <button
+          onClick={() => navigate("/dashboard")}
+          className="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg shadow-lg transition-colors"
+        >
+          🏠 Ir al inicio
+        </button>
+      </div>
     </div>
   );
 }

@@ -100,7 +100,6 @@ export default function CanvasArea({
       case "select":
       case "search":
       case "tabla":
-        // Estas propiedades son manejadas por extraProps que vienen del DesignToolbox
         break;
     }
 
@@ -116,6 +115,8 @@ export default function CanvasArea({
   };
 
   const handleDragStop = (id) => (e, d) => {
+    e.stopPropagation();
+
     setElements(
       elements.map((el) => {
         if (el.id === id) {
@@ -346,7 +347,6 @@ export default function CanvasArea({
     };
   };
 
-  // Renderizado de componentes UI específicos
   const renderUIComponent = (el) => {
     switch (el.type) {
       case "texto":
@@ -728,109 +728,177 @@ export default function CanvasArea({
           >
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
+                display: "flex",
+                flexDirection: "column",
                 height: "100%",
                 width: "100%",
               }}
             >
-              {/* Encabezado */}
               <div
                 style={{
-                  padding: "8px",
-                  borderBottom: "1px solid #d1d5db",
-                  borderRight: "1px solid #d1d5db",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
                   backgroundColor: "#f3f4f6",
-                  fontWeight: "bold",
-                  fontSize: "12px",
+                  borderBottom: "1px solid #d1d5db",
                 }}
               >
-                Encabezado 1
-              </div>
-              <div
-                style={{
-                  padding: "8px",
-                  borderBottom: "1px solid #d1d5db",
-                  borderRight: "1px solid #d1d5db",
-                  backgroundColor: "#f3f4f6",
-                  fontWeight: "bold",
-                  fontSize: "12px",
-                }}
-              >
-                Encabezado 2
-              </div>
-              <div
-                style={{
-                  padding: "8px",
-                  borderBottom: "1px solid #d1d5db",
-                  backgroundColor: "#f3f4f6",
-                  fontWeight: "bold",
-                  fontSize: "12px",
-                }}
-              >
-                Encabezado 3
+                {(
+                  el.headers || ["Encabezado 1", "Encabezado 2", "Encabezado 3"]
+                ).map((header, index) => (
+                  <div
+                    key={`header-${index}`}
+                    style={{
+                      padding: "8px",
+                      borderRight: index < 2 ? "1px solid #d1d5db" : "none",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {header}
+                  </div>
+                ))}
               </div>
 
-              {/* Fila 1 */}
               <div
                 style={{
-                  padding: "8px",
-                  borderBottom: "1px solid #d1d5db",
-                  borderRight: "1px solid #d1d5db",
-                  fontSize: "12px",
+                  display: "flex",
+                  flexDirection: "column",
+                  flex: 1,
+                  overflow: "auto",
                 }}
               >
-                Celda 1,1
-              </div>
-              <div
-                style={{
-                  padding: "8px",
-                  borderBottom: "1px solid #d1d5db",
-                  borderRight: "1px solid #d1d5db",
-                  fontSize: "12px",
-                }}
-              >
-                Celda 1,2
-              </div>
-              <div
-                style={{
-                  padding: "8px",
-                  borderBottom: "1px solid #d1d5db",
-                  fontSize: "12px",
-                }}
-              >
-                Celda 1,3
-              </div>
-
-              {/* Fila 2 */}
-              <div
-                style={{
-                  padding: "8px",
-                  borderRight: "1px solid #d1d5db",
-                  fontSize: "12px",
-                }}
-              >
-                Celda 2,1
-              </div>
-              <div
-                style={{
-                  padding: "8px",
-                  borderRight: "1px solid #d1d5db",
-                  fontSize: "12px",
-                }}
-              >
-                Celda 2,2
-              </div>
-              <div
-                style={{
-                  padding: "8px",
-                  fontSize: "12px",
-                }}
-              >
-                Celda 2,3
+                {(
+                  el.rows || [
+                    ["Celda 1,1", "Celda 1,2", "Celda 1,3"],
+                    ["Celda 2,1", "Celda 2,2", "Celda 2,3"],
+                    ["Celda 3,1", "Celda 3,2", "Celda 3,3"],
+                  ]
+                ).map((row, rowIndex) => (
+                  <div
+                    key={`row-${rowIndex}`}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(3, 1fr)",
+                      borderBottom:
+                        rowIndex < (el.rows?.length || 3) - 1
+                          ? "1px solid #e5e7eb"
+                          : "none",
+                    }}
+                  >
+                    {row.map((cell, cellIndex) => (
+                      <div
+                        key={`cell-${rowIndex}-${cellIndex}`}
+                        style={{
+                          padding: "8px",
+                          borderRight:
+                            cellIndex < 2 ? "1px solid #e5e7eb" : "none",
+                          fontSize: "12px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {cell}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
+        );
+
+      case "card":
+        return (
+          <div
+            style={{
+              backgroundColor: el.color,
+              borderRadius: `${el.borderRadius || 8}px`,
+              borderWidth: el.borderWidth ? `${el.borderWidth}px` : "1px",
+              borderColor: el.borderColor || "#e5e7eb",
+              borderStyle: "solid",
+              width: "100%",
+              height: "100%",
+              padding: "16px",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: el.fontSize ? `${el.fontSize}px` : "16px",
+                fontWeight: "600",
+                marginBottom: "8px",
+                color: el.textColor,
+                fontFamily: el.fontFamily || "Arial",
+              }}
+            >
+              {el.text || "Título de tarjeta"}
+            </div>
+            <div
+              style={{
+                fontSize: "14px",
+                color: "#6b7280",
+                fontFamily: el.fontFamily || "Arial",
+              }}
+            >
+              {el.description || "Descripción de ejemplo para esta tarjeta"}
+            </div>
+          </div>
+        );
+
+      case "alert":
+        return (
+          <div
+            style={{
+              backgroundColor: el.color,
+              borderRadius: `${el.borderRadius || 4}px`,
+              borderWidth: el.borderWidth ? `${el.borderWidth}px` : "1px",
+              borderColor: el.borderColor || "#fecaca",
+              borderStyle: "solid",
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              padding: "0 12px",
+              color: el.textColor,
+              fontSize: el.fontSize ? `${el.fontSize}px` : "14px",
+              fontFamily: el.fontFamily || "Arial",
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ marginRight: "8px", color: el.textColor }}
+            >
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            {el.text || "¡Esta es una alerta de ejemplo!"}
+          </div>
+        );
+
+      case "divider":
+        return (
+          <div
+            style={{
+              backgroundColor: el.color,
+              width: "100%",
+              height: "100%",
+            }}
+          ></div>
         );
 
       default:

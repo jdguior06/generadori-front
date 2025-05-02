@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const API_URL = "http://localhost:3001/api/proyectos";
-const API_URL = "https://generador-back-production.up.railway.app/api/proyectos";
+//const API_URL = "http://localhost:3000/api/proyectos";
+const API_URL = "https://generadori-back-production.up.railway.app/api/proyectos";
 
 export const fetchProjects = async () => {
   const token = localStorage.getItem("token");

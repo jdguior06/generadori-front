@@ -25,19 +25,27 @@ export default function ElementEditor({
     updateElement(selectedElement.id, { [property]: value });
   };
 
-  // Determinar qué pestañas mostrar según el tipo de elemento
   const availableTabs = () => {
     const tabs = ["general"];
 
-    // Todos los elementos pueden tener estilo
     tabs.push("style");
 
-    // Solo texto tiene opciones de texto
-    if (selectedElement.type === "texto") {
+    if (
+      [
+        "texto",
+        "boton",
+        "input",
+        "checkbox",
+        "radio",
+        "switch",
+        "select",
+        "search",
+        "card",
+      ].includes(selectedElement.type)
+    ) {
       tabs.push("text");
     }
 
-    // Pestaña de imagen solo para tipos imagen e icono
     if (selectedElement.type === "imagen" || selectedElement.type === "icono") {
       tabs.push("image");
     }
