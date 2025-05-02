@@ -14,7 +14,17 @@ import ElementEditor from "../components/ElementEditor";
 import generateRandomColor from "../utils/generateRandomColor";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:3001");
+// const socket = io("https://generadori-back-production.up.railway.app");
+
+const socket = io(
+  import.meta.env.MODE === "development"
+    ? "http://localhost:3001"
+    : "https://generadori-back-production.up.railway.app",
+  {
+    transports: ["websocket"],
+  }
+);
+
 
 export default function ProjectoPizarra() {
   const { id } = useParams();
